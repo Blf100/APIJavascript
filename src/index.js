@@ -51,7 +51,7 @@ app.put("/projects/:id", (request, response) => {
   const project = {
       id, 
       title,
-       owner
+      owner
      };
 
   database[projectIndex] = project;
@@ -63,17 +63,18 @@ app.put("/projects/:id", (request, response) => {
 // Route to delet: projects
 app.delete("/projects/:id", (request, response) => {
   
-  const id = request.params;
+  const { id } = request.params;
 
-  console.log(id)
+  const projectIndex = database.findIndex(project => project.id === id);
+
+  if(projectIndex === -1) {
+    return response.status(400).json({message: "Este ID não existe"});
+  }
+
+  database.splice(projectIndex, 1);
+
+  return response.status(204).json([]);
   
-  
-  return response.json([
-    "Projeto 1",
-    "Projeto 2",
-    "Projeto 3"
-    
-  ])
 });
 
 // Port for server access
