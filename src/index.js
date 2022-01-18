@@ -12,7 +12,21 @@ const app = express();
 app.use(express.json());
 
 // Array to database
-const database = []
+const database = [];
+
+// Creating middleware for authentication
+function logRoutes(request, response, next) {
+  const { method, url } = request;
+
+  const route = `[${method.toUpperCase()}]${url}`;
+
+  console.log(route);
+
+  return next();
+}
+
+// Using middleware on all routes
+app.use(logRoutes);
 
 // Route to search: projects
 app.get("/projects", (request, response) => {
