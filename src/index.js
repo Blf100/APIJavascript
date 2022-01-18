@@ -15,15 +15,21 @@ app.use(express.json());
 const database = []
 
 // Route to search: projects
-app.get("/projects", (require, response) => {
+app.get("/projects", (request, response) => {
   
-  return response.json(database);
+  const { title } = request.query;
+
+  const results = title 
+        ? database.filter(project => project.title.includes(title))
+        : database;
+
+  return response.json(results);
 });
 
 // Rot to post: projects
 app.post("/projects", (request, response) => {
   
-  const { title, owner } = request.body;
+  const {title, owner } = request.body;
 
   const project = {
     id: uuidv4(),
